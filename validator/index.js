@@ -8,9 +8,30 @@ exports.userValidator = [
 ];
 exports.errorChecker = (req, res, next) => {
   const errors = validationResult(req);
-  if (errors.length > 0) {
+  if (!errors.isEmpty()) {
     //const firstError = errors.map((error) => error.msg)[0];
     return res.status(400).json({ errors: errors.array() });
   }
   next();
 };
+exports.profileValidator = [
+  check("status", "Status is required").not().isEmpty(),
+  check("skills", "Skills is required").not().isEmpty(),
+];
+exports.experienceValidator = [
+  check("title", "Title is required").not().isEmpty(),
+  check("company", "Company is required").not().isEmpty(),
+  check("from", "From date is required and needs to be from the past")
+    .not()
+    .isEmpty(),
+];
+exports.educationValidator = [
+  check("school", "School is required").not().isEmpty(),
+  check("degree", "Degree is required").not().isEmpty(),
+  check("fieldofstudy", "Study is required").not().isEmpty(),
+  check("from", "From date is required and needs to be from the past")
+    .not()
+    .isEmpty(),
+];
+exports.postValidator = [check("text", "Text is required").not().isEmpty()];
+exports.commentValidator = [check("text", "Text is required").not().isEmpty()];
