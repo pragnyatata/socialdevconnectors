@@ -23,7 +23,7 @@ router.delete("/:id", auth, deleteAPost);
 
 router.put("/like/:id", auth, likePost);
 router.put("/unlike/:id", auth, unlikePost);
-router.put("/comment/:id", commentValidator, errorChecker, auth, addComment);
+router.post("/comment/:id", commentValidator, errorChecker, auth, addComment);
 router.delete("/comment/:id/:comment_id", auth, deleteComment);
 
 // router.put("//:id", auth, likePost);

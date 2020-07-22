@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Profile = require("../models/Profile");
+const Posts = require("../models/Posts");
 const request = require("request");
 const config = require("config");
 const { response } = require("express");
@@ -8,8 +9,10 @@ exports.myProfile = async (req, res) => {
     const profile = await Profile.findOne({
       user: req.user.id,
     }).populate("user", ["name", "avatar"]);
-    if (!profile)
+    if (!profile) {
       return res.status(400).json({ msg: "No profile for this user" });
+    }
+    return res.status(200).json(profile);
   } catch (error) {
     console.log(err.message);
     if (err) return res.status(500).json({ error: "Something went wrong" });
@@ -22,7 +25,7 @@ exports.create = async (req, res) => {
     location,
     bio,
     status,
-    gihubusername,
+    githubusername,
     skills,
     youtube,
     facebook,
@@ -37,7 +40,7 @@ exports.create = async (req, res) => {
     location,
     bio,
     status,
-    gihubusername,
+    githubusername,
   };
   const social = { youtube, facebook, twitter, instagram, linkedin };
   profileFields.skills = skills.split(",").map((skill) => skill.trim());
@@ -50,6 +53,7 @@ exports.create = async (req, res) => {
         { $set: profileFields },
         { new: true }
       );
+
       return res.status(200).json(profile);
     }
     profile = new Profile(profileFields);
@@ -78,6 +82,7 @@ exports.getProfileByUserId = async (req, res) => {
       .exec();
     if (!profile)
       return res.status(400).json({ msg: "No profile for the user" });
+    console.log(profile);
     return res.status(200).json(profile);
   } catch (err) {
     console.log(err.message);
@@ -88,6 +93,7 @@ exports.getProfileByUserId = async (req, res) => {
 };
 exports.deleteUserData = async (req, res) => {
   try {
+    await Posts.deleteMany({ user: req.user.id });
     await Profile.findOneAndRemove({ user: req.user.id });
     await User.findOneAndRemove({ _id: req.user.id });
     return res.status(200).json({ msg: "User removed" });

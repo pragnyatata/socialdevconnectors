@@ -4,6 +4,7 @@ const Profile = require("../models/Profile");
 exports.create = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
+
     const newPost = Posts({
       text: req.body.text,
       name: user.name,
@@ -97,7 +98,7 @@ exports.unlikePost = async (req, res) => {
 };
 exports.addComment = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).selected("-password");
+    const user = await User.findById(req.user.id).select("-password");
     const post = await Posts.findById(req.params.id);
     const newComment = {
       text: req.body.text,
@@ -115,7 +116,7 @@ exports.addComment = async (req, res) => {
 };
 exports.deleteComment = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).selected("-password");
+    const user = await User.findById(req.user.id).select("-password");
     const post = await Posts.findById(req.params.id);
     const comment = post.comments.find(
       (comment) => comment.id === req.params.comment_id

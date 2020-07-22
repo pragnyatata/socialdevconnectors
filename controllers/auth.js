@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 exports.getUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
-    return res.status(200).json({ user: user });
+    return res.status(200).json(user);
   } catch (error) {
     if (err) return res.status(500).json({ error: "Something went wrong" });
   }
