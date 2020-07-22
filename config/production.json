@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://pragnya:pragnya@devconnectors.g6qqx.mongodb.net/<dbname>?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken",
+  "githubClientId": "9329020be9a270616739",
+  "githubSecret": "34bc55dc8ff9070cfd92267a16acc22a5a0326cf"
+}
